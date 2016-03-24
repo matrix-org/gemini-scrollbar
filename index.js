@@ -301,10 +301,13 @@
   };
 
   GeminiScrollbar.prototype._resizeHandler = function _resizeHandler() {
-    this.update();
+    // if we've been given an onResize callback, we run it *before* updating
+    // our scrollbars, in case the callback does something nasty which resizes
+    // the content.
     if (this.onResize) {
       this.onResize();
     }
+    this.update();
   };
 
   GeminiScrollbar.prototype._clickVerticalTrackHandler = function _clickVerticalTrackHandler(e) {
