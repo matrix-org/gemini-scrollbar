@@ -56,6 +56,7 @@
     this.autoshow = false;
     this.createElements = true;
     this.forceGemini = false;
+    this.relayoutOnUpdate = true;
     this.onResize = null;
 
     Object.keys(config || {}).forEach(function (propertyName) {
@@ -193,8 +194,19 @@
     }
 
     var heightPercentage, widthPercentage;
-    this._viewElement.style.width = '';
-    this._viewElement.style.height = '';
+
+    if (this.relayoutOnUpdate) {
+      // I'm not sure what the purpose of this is - it was introduced here, but
+      // there isn't much clue as to why it is necessary:
+      // https://github.com/noeldelgado/gemini-scrollbar/commit/3b5674c
+      //
+      // The problem is that the two complete re-layouts which result from this
+      // can be quite expensive on complex layouts; so it can be disabled by
+      // setting relayoutOnUpdate = false.
+
+      this._viewElement.style.width = '';
+      this._viewElement.style.height = '';
+    }
 
     this._viewElement.style.width = ((this.element.offsetWidth + SCROLLBAR_WIDTH).toString() + 'px');
     this._viewElement.style.height = ((this.element.offsetHeight + SCROLLBAR_WIDTH).toString() + 'px');
