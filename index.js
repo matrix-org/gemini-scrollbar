@@ -325,7 +325,8 @@
     // it's also overflow: hidden, so we should never see the overscroll.  however, it
     // turns out that if you hit tab to jump focus to an element in the view which is
     // out of scroll... Chrome scrolls the container, not the view, to make it visible.
-    // Therefore we hack around this by fighting against it here.
+    // Therefore we hack around this by fighting against it here.  This unfortunately
+    // flickers, but it's better than the alternative.
 
     this.element.scrollTop = 0;
     this.element.scrollLeft = 0;
