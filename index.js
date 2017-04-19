@@ -242,7 +242,7 @@
       return this;
     }
 
-    this._unbinEvents();
+    this._unbindEvents();
 
     removeClass(this.element, [CLASSNAMES.element, CLASSNAMES.autoshow]);
 
@@ -289,7 +289,7 @@
     return this;
   };
 
-  GeminiScrollbar.prototype._unbinEvents = function _unbinEvents() {
+  GeminiScrollbar.prototype._unbindEvents = function _unbindEvents() {
     this._viewElement.removeEventListener('scroll', this._cache.events.scrollHandler);
     this._scrollbarVerticalElement.removeEventListener('mousedown', this._cache.events.clickVerticalTrackHandler);
     this._scrollbarHorizontalElement.removeEventListener('mousedown', this._cache.events.clickHorizontalTrackHandler);
