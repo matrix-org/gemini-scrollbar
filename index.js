@@ -278,6 +278,7 @@
     this._cache.events.clickHorizontalThumbHandler = this._clickHorizontalThumbHandler.bind(this);
     this._cache.events.mouseUpDocumentHandler = this._mouseUpDocumentHandler.bind(this);
     this._cache.events.mouseMoveDocumentHandler = this._mouseMoveDocumentHandler.bind(this);
+    this._cache.events.containerScrollHandler = this._containerScrollHandler.bind(this);
 
     this._viewElement.addEventListener('scroll', this._cache.events.scrollHandler);
     this._scrollbarVerticalElement.addEventListener('mousedown', this._cache.events.clickVerticalTrackHandler);
@@ -285,6 +286,7 @@
     this._thumbVerticalElement.addEventListener('mousedown', this._cache.events.clickVerticalThumbHandler);
     this._thumbHorizontalElement.addEventListener('mousedown', this._cache.events.clickHorizontalThumbHandler);
     this._document.addEventListener('mouseup', this._cache.events.mouseUpDocumentHandler);
+    this.element.addEventListener('scroll', this._cache.events.containerScrollHandler);
 
     return this;
   };
@@ -297,6 +299,7 @@
     this._thumbHorizontalElement.removeEventListener('mousedown', this._cache.events.clickHorizontalThumbHandler);
     this._document.removeEventListener('mouseup', this._cache.events.mouseUpDocumentHandler);
     this._document.removeEventListener('mousemove', this._cache.events.mouseMoveDocumentHandler);
+    this.element.removeEventListener('scroll', this._cache.events.containerScrollHandler);
 
     return this;
   };
@@ -315,6 +318,17 @@
     this._thumbHorizontalElement.style.msTransform = 'translateX(' + x + '%)';
     this._thumbHorizontalElement.style.webkitTransform = 'translateX(' + x + '%)';
     this._thumbHorizontalElement.style.transform = 'translateX(' + x + '%)';
+  };
+
+  GeminiScrollbar.prototype._containerScrollHandler = function _containerScrollHandler() {
+    // the container necessarily has ~15px of overscroll to mask off the view's scrollbars
+    // it's also overflow: hidden, so we should never see the overscroll.  however, it
+    // turns out that if you hit tab to jump focus to an element in the view which is
+    // out of scroll... Chrome scrolls the container, not the view, to make it visible.
+    // Therefore we hack around this by fighting against it here.
+
+    this.element.scrollTop = 0;
+    this.element.scrollLeft = 0;
   };
 
   GeminiScrollbar.prototype._resizeHandler = function _resizeHandler() {
